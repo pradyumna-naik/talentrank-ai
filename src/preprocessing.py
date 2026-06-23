@@ -1,4 +1,4 @@
-﻿"""Text cleaning and profile construction for the baseline pipeline."""
+﻿"""Text cleaning and privacy-safe profile construction for ranking."""
 import re
 from collections.abc import Iterable
 
@@ -32,8 +32,9 @@ def clean_text_fields(dataframe: pd.DataFrame, fields: Iterable[str]) -> pd.Data
 
 
 def create_candidate_profile_text(candidate: pd.Series) -> str:
-    """Combine the requested candidate fields into one retrieval profile."""
+    """Combine only approved non-sensitive candidate fields into one ranking profile."""
     return join_text([
         candidate["skills"], candidate["projects"], candidate["summary"],
         candidate["education"], f"{candidate['experience_years']} years experience",
     ])
+

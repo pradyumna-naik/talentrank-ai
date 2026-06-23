@@ -1,6 +1,7 @@
-﻿"""Persist ranking outputs for downstream review."""
+﻿"""Persist ranking outputs and responsible-AI feature reports."""
 import json
 from pathlib import Path
+from typing import Mapping
 
 import pandas as pd
 
@@ -18,3 +19,12 @@ def write_outputs(results: pd.DataFrame, output_dir: str | Path) -> tuple[Path, 
     output.to_csv(csv_path, index=False)
     json_path.write_text(json.dumps(output.to_dict(orient="records"), indent=2), encoding="utf-8")
     return csv_path, json_path
+
+
+def write_used_features_report(report: Mapping[str, object], output_dir: str | Path) -> Path:
+    """Write the responsible-AI report describing fields used for ranking."""
+    directory = Path(output_dir)
+    directory.mkdir(parents=True, exist_ok=True)
+    report_path = directory / "used_features_report.json"
+    report_path.write_text(json.dumps(dict(report), indent=2), encoding="utf-8")
+    return report_path

@@ -1,0 +1,5 @@
+﻿job_id,candidate_id,rank,final_score,explanation
+J001,C001,1,83.26,"Candidate C001 is a strong fit because they match 5/5 required skills and have 4 years of experience for the 3-6 year role range."
+J001,C002,2,61.01,"Candidate C002 is a moderate fit because they match 3/5 required skills and have 3 years of experience for the 3-6 year role range."
+J001,C004,3,45.49,"Candidate C004 is a moderate fit because they match 2/5 required skills and have 2 years of experience, below the 3-year minimum."
+J002,C003,1,83.83,"Candidate C003 is a strong fit because they match 4/4 required skills and have 4 years of experience for the 2-5 year role range."

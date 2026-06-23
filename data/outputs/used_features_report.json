@@ -1,0 +1,38 @@
+{
+  "used_candidate_features": [
+    "skills",
+    "education",
+    "projects",
+    "summary",
+    "experience_years",
+    "activity_score"
+  ],
+  "used_job_features": [
+    "title",
+    "description",
+    "required_skills",
+    "preferred_skills",
+    "min_experience",
+    "max_experience"
+  ],
+  "identifier_only_fields": [
+    "candidate_id",
+    "job_id"
+  ],
+  "sensitive_columns_detected": [
+    "name"
+  ],
+  "excluded_sensitive_columns": [
+    "address",
+    "age",
+    "caste",
+    "date_of_birth",
+    "gender",
+    "marital_status",
+    "name",
+    "photo",
+    "religion"
+  ],
+  "sensitive_columns_used_for_ranking": [],
+  "disclaimer": "This system is a recruiter decision-support tool. Final hiring decisions should be human-reviewed."
+}
