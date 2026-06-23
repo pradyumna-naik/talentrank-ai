@@ -1,4 +1,4 @@
-"""Streamlit dashboard for TalentRank AI."""
+﻿"""Streamlit dashboard for TalentRank AI."""
 from pathlib import Path
 import sys
 
@@ -11,9 +11,10 @@ from src.config import RAW_DATA_DIR  # noqa: E402
 from src.data_loader import load_candidates, load_jobs  # noqa: E402
 
 
-st.set_page_config(page_title="TalentRank AI", page_icon="🏅", layout="wide")
+st.set_page_config(page_title="TalentRank AI", page_icon="TR", layout="wide")
 st.title("TalentRank AI")
-st.caption("Explainable candidate shortlisting beyond keyword counts.")
+st.caption("Hybrid semantic and keyword-based candidate shortlisting.")
+
 
 @st.cache_data
 def get_data() -> tuple[pd.DataFrame, pd.DataFrame]:
@@ -31,7 +32,10 @@ with st.expander("Job description", expanded=True):
     st.write(job["description"])
 
 if st.button("Rank candidates", type="primary"):
-    results = rank_candidates(job, candidates, top_k)
+    results = rank_candidates(job, candidates).head(top_k)
     st.subheader("Ranked shortlist")
-    st.dataframe(results, use_container_width=True, hide_index=True)
+    score_columns = ["candidate_id", "rank", "final_score", "semantic_score", "tfidf_score", "skill_match_score"]
+    st.dataframe(results[score_columns], use_container_width=True, hide_index=True)
+    st.subheader("Explanations")
+    st.dataframe(results[["candidate_id", "explanation"]], use_container_width=True, hide_index=True)
     st.download_button("Download CSV", results.to_csv(index=False), "ranked_candidates.csv", "text/csv")

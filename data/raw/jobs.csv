@@ -1,3 +1,3 @@
-job_id,title,description
-J001,Data Scientist,"We need a Data Scientist with 3+ years of experience in Python, SQL, pandas, scikit-learn, machine learning, data visualization, and Streamlit. Experience with AWS is preferred."
-J002,Frontend Engineer,"Build accessible web applications with JavaScript, React, Node.js, Git, and 2+ years of professional experience."
+﻿job_id,title,description,required_skills,preferred_skills,min_experience,max_experience
+J001,Data Scientist,"Build machine-learning models and analytics products for business teams.","Python, SQL, pandas, scikit-learn, machine learning","Streamlit, AWS, data visualization",3,6
+J002,Frontend Engineer,"Build accessible web applications and API integrations.","JavaScript, React, Node.js, Git","Docker",2,5

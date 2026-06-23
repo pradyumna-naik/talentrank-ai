@@ -1,63 +1,107 @@
-"""Run TalentRank AI against a selected job and a candidate CSV."""
+﻿"""Run the hybrid TF-IDF and semantic candidate-ranking pipeline."""
 from __future__ import annotations
 
 import argparse
+from pathlib import Path
+from typing import Any
 
 import pandas as pd
 
-from src.candidate_profiler import build_candidate_profiles
-from src.config import OUTPUT_DIR, RAW_DATA_DIR, TOP_K
+from src.config import CANDIDATE_EMBEDDINGS_PATH, OUTPUT_DIR, RAW_DATA_DIR
 from src.data_loader import load_candidates, load_jobs
-from src.explainability import build_explanation
-from src.feature_engineering import build_match_features
-from src.jd_parser import parse_job_description
+from src.explainability import build_explanation, skill_match_score
+from src.jd_parser import parse_job
 from src.output_writer import write_outputs
-from src.reranker import rerank
-from src.retrieval import retrieve_candidates
+from src.preprocessing import clean_text_fields, create_candidate_profile_text
+from src.retrieval import (
+    calculate_hybrid_score,
+    calculate_semantic_scores,
+    calculate_tfidf_scores,
+    load_or_create_candidate_embeddings,
+    load_sentence_model,
+)
 
 
-def rank_candidates(job_row: pd.Series, candidates: pd.DataFrame, top_k: int = TOP_K) -> pd.DataFrame:
-    """Rank candidates for a single job row and return explainable results."""
-    job = parse_job_description(str(job_row["title"]), str(job_row["description"]))
-    profiles = build_candidate_profiles(candidates)
-    retrieved = retrieve_candidates(job.text, [profile.text for profile in profiles], top_k)
+CANDIDATE_TEXT_FIELDS = ("skills", "education", "projects", "summary")
+JOB_TEXT_FIELDS = ("title", "description", "required_skills", "preferred_skills")
+
+
+def _rank_prepared(
+    job_row: pd.Series,
+    candidates: pd.DataFrame,
+    candidate_texts: list[str],
+    candidate_embeddings: Any,
+    semantic_model: Any,
+) -> pd.DataFrame:
+    """Rank pre-cleaned candidates for one pre-cleaned job."""
+    job = parse_job(job_row)
+    tfidf_scores = calculate_tfidf_scores(job.profile_text, candidate_texts)
+    semantic_scores = calculate_semantic_scores(job.profile_text, candidate_embeddings, semantic_model)
     records: list[dict[str, object]] = []
-    for index, relevance in retrieved:
-        candidate = profiles[index]
-        features = build_match_features(job, candidate)
-        score = rerank(relevance, features)
+    for index, candidate in candidates.reset_index(drop=True).iterrows():
+        coverage = skill_match_score(candidate["skills"], job.required_skills)
+        hybrid = calculate_hybrid_score(float(semantic_scores[index]), float(tfidf_scores[index]), coverage)
         records.append({
-            "candidate_id": candidate.candidate_id,
-            "name": candidate.name,
-            "experience_years": candidate.experience_years,
-            "matched_skills": ", ".join(features.matched_skills),
-            "missing_skills": ", ".join(features.missing_skills),
-            "relevance_score": round(score.relevance_score * 100, 2),
-            "skill_score": round(score.skill_score * 100, 2),
-            "experience_score": round(score.experience_score * 100, 2),
-            "final_score": round(score.final_score, 2),
-            "explanation": build_explanation(candidate, features),
+            "job_id": job.job_id,
+            "candidate_id": str(candidate["candidate_id"]),
+            "semantic_score": round(float(semantic_scores[index]) * 100, 2),
+            "tfidf_score": round(float(tfidf_scores[index]) * 100, 2),
+            "skill_match_score": round(coverage * 100, 2),
+            "final_score": round(hybrid * 100, 2),
+            "explanation": build_explanation(
+                candidate["skills"], job.required_skills,
+                float(semantic_scores[index]), float(tfidf_scores[index]), coverage,
+            ),
         })
-    return pd.DataFrame(records).sort_values("final_score", ascending=False, ignore_index=True)
+    results = pd.DataFrame(records).sort_values("final_score", ascending=False, ignore_index=True)
+    results.insert(2, "rank", range(1, len(results) + 1))
+    return results
+
+
+def rank_candidates(
+    job_row: pd.Series,
+    candidates: pd.DataFrame,
+    semantic_model: Any | None = None,
+    embedding_cache_path: str | Path = CANDIDATE_EMBEDDINGS_PATH,
+) -> pd.DataFrame:
+    """Rank candidates for one job using the hybrid semantic score."""
+    cleaned_candidates = clean_text_fields(candidates, CANDIDATE_TEXT_FIELDS)
+    cleaned_job = clean_text_fields(pd.DataFrame([job_row]), JOB_TEXT_FIELDS).iloc[0]
+    model = semantic_model or load_sentence_model()
+    candidate_texts = cleaned_candidates.apply(create_candidate_profile_text, axis=1).tolist()
+    candidate_embeddings = load_or_create_candidate_embeddings(candidate_texts, embedding_cache_path, model)
+    return _rank_prepared(cleaned_job, cleaned_candidates, candidate_texts, candidate_embeddings, model)
+
+
+def rank_all_jobs(
+    jobs: pd.DataFrame,
+    candidates: pd.DataFrame,
+    semantic_model: Any | None = None,
+    embedding_cache_path: str | Path = CANDIDATE_EMBEDDINGS_PATH,
+) -> pd.DataFrame:
+    """Clean inputs and produce hybrid rankings for every job-candidate pairing."""
+    cleaned_candidates = clean_text_fields(candidates, CANDIDATE_TEXT_FIELDS)
+    cleaned_jobs = clean_text_fields(jobs, JOB_TEXT_FIELDS)
+    model = semantic_model or load_sentence_model()
+    candidate_texts = cleaned_candidates.apply(create_candidate_profile_text, axis=1).tolist()
+    candidate_embeddings = load_or_create_candidate_embeddings(candidate_texts, embedding_cache_path, model)
+    rankings = [
+        _rank_prepared(job, cleaned_candidates, candidate_texts, candidate_embeddings, model)
+        for _, job in cleaned_jobs.iterrows()
+    ]
+    return pd.concat(rankings, ignore_index=True)
 
 
 def main() -> None:
-    """Execute the default demo pipeline."""
-    parser = argparse.ArgumentParser(description="Rank candidates for a job description.")
+    """Run hybrid ranking from CSV inputs and write ranked_output.csv."""
+    parser = argparse.ArgumentParser(description="Rank candidates with hybrid semantic similarity.")
     parser.add_argument("--jobs", default=RAW_DATA_DIR / "jobs.csv", help="Path to jobs CSV")
     parser.add_argument("--candidates", default=RAW_DATA_DIR / "candidates.csv", help="Path to candidates CSV")
-    parser.add_argument("--job-id", default=None, help="Optional job_id to rank")
-    parser.add_argument("--top-k", type=int, default=TOP_K)
     args = parser.parse_args()
-    jobs = load_jobs(args.jobs)
-    candidates = load_candidates(args.candidates)
-    selected = jobs if args.job_id is None else jobs[jobs["job_id"].astype(str) == args.job_id]
-    if selected.empty:
-        raise ValueError(f"No job found for job_id={args.job_id}")
-    results = rank_candidates(selected.iloc[0], candidates, args.top_k)
-    csv_path, json_path = write_outputs(results, OUTPUT_DIR)
+    results = rank_all_jobs(load_jobs(args.jobs), load_candidates(args.candidates))
+    csv_path, _ = write_outputs(results, OUTPUT_DIR)
     print(results.to_string(index=False))
-    print(f"\nSaved: {csv_path}\nSaved: {json_path}")
+    print(f"\nSaved: {csv_path}")
 
 
 if __name__ == "__main__":

@@ -1,32 +1,26 @@
-"""Extract practical, explainable job requirements from job-description text."""
-import re
+﻿"""Job parsing and TF-IDF profile construction."""
 from dataclasses import dataclass
 
-from src.preprocessing import normalize_text
+import pandas as pd
 
-
-KNOWN_SKILLS = {
-    "python", "sql", "pandas", "numpy", "scikit-learn", "machine learning",
-    "data analysis", "data visualization", "tableau", "power bi", "aws", "azure",
-    "docker", "kubernetes", "java", "javascript", "react", "node.js", "git",
-    "nlp", "streamlit", "pytorch", "tensorflow", "excel",
-}
+from src.preprocessing import join_text, split_skills
 
 
 @dataclass(frozen=True)
-class JobRequirements:
-    """Requirements derived from a job description."""
+class JobProfile:
+    """Structured job data needed by baseline ranking."""
 
-    title: str
-    skills: list[str]
-    min_experience_years: float
-    text: str
+    job_id: str
+    required_skills: list[str]
+    profile_text: str
 
 
-def parse_job_description(title: str, description: str) -> JobRequirements:
-    """Identify mentioned known skills and a minimum experience value if present."""
-    text = normalize_text(description)
-    skills = sorted(skill for skill in KNOWN_SKILLS if re.search(rf"(?<!\w){re.escape(skill)}(?!\w)", text))
-    experience_matches = re.findall(r"(\d+(?:\.\d+)?)\s*\+?\s*(?:years?|yrs?)", text)
-    min_experience = max((float(match) for match in experience_matches), default=0.0)
-    return JobRequirements(title=title, skills=skills, min_experience_years=min_experience, text=text)
+def parse_job(row: pd.Series) -> JobProfile:
+    """Parse one jobs.csv row into required skills and profile text."""
+    return JobProfile(
+        job_id=str(row["job_id"]),
+        required_skills=split_skills(row["required_skills"]),
+        profile_text=join_text([
+            row["title"], row["description"], row["required_skills"], row["preferred_skills"],
+        ]),
+    )

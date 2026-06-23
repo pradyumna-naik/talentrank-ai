@@ -1,6 +1,6 @@
-candidate_id,name,skills,experience_years,profile
-C001,Aarav Mehta,"Python, SQL, pandas, scikit-learn, machine learning, Streamlit, AWS",4,"Data scientist who builds production analytics and machine-learning dashboards for business teams."
-C002,Diya Shah,"Python, SQL, pandas, data visualization, Tableau, Excel",3,"Analytics specialist experienced in reporting, SQL analysis, and stakeholder dashboards."
-C003,Rohan Kumar,"JavaScript, React, Node.js, Git, Docker",4,"Frontend engineer building React platforms and Node.js services."
-C004,Meera Iyer,"Python, numpy, PyTorch, NLP, machine learning",2,"Machine learning engineer focused on NLP experimentation and model evaluation."
-C005,Kabir Singh,"SQL, Power BI, Excel, data visualization, Azure",5,"Business intelligence analyst with deep dashboard and warehouse experience."
+﻿candidate_id,name,skills,experience_years,education,projects,summary,activity_score
+C001,Aarav Mehta,"Python, SQL, pandas, scikit-learn, machine learning, Streamlit, AWS",4,"B.Tech Computer Science","Built machine-learning dashboards and a candidate screening app","Data scientist with production analytics experience",88
+C002,Diya Shah,"Python, SQL, pandas, data visualization, Tableau, Excel",3,"B.Sc Statistics","Created SQL reporting and Tableau dashboards","Analytics specialist focused on stakeholder reporting",76
+C003,Rohan Kumar,"JavaScript, React, Node.js, Git, Docker",4,"B.Tech Information Technology","Built React platforms and Node.js APIs","Frontend engineer with web application experience",81
+C004,Meera Iyer,"Python, numpy, PyTorch, NLP, machine learning",2,"M.Sc Data Science","Built NLP classifiers and model evaluation workflows","Machine learning engineer focused on NLP",72
+C005,Kabir Singh,"SQL, Power BI, Excel, data visualization, Azure",5,"B.Com Analytics","Developed Power BI dashboards and data pipelines","Business intelligence analyst",70

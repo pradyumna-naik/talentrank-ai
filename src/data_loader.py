@@ -1,15 +1,21 @@
-"""CSV loading and lightweight validation utilities."""
+﻿"""CSV loading and schema validation utilities."""
 from pathlib import Path
 
 import pandas as pd
 
 
-REQUIRED_CANDIDATE_COLUMNS = {"candidate_id", "name", "skills", "experience_years", "profile"}
-REQUIRED_JOB_COLUMNS = {"job_id", "title", "description"}
+REQUIRED_CANDIDATE_COLUMNS = {
+    "candidate_id", "name", "skills", "experience_years", "education",
+    "projects", "summary", "activity_score",
+}
+REQUIRED_JOB_COLUMNS = {
+    "job_id", "title", "description", "required_skills", "preferred_skills",
+    "min_experience", "max_experience",
+}
 
 
 def load_csv(path: str | Path, required_columns: set[str]) -> pd.DataFrame:
-    """Load a CSV file and raise a clear error if required columns are missing."""
+    """Load a non-empty CSV and validate its required columns."""
     dataframe = pd.read_csv(path)
     missing = required_columns - set(dataframe.columns)
     if missing:
@@ -20,10 +26,10 @@ def load_csv(path: str | Path, required_columns: set[str]) -> pd.DataFrame:
 
 
 def load_candidates(path: str | Path) -> pd.DataFrame:
-    """Load candidate data."""
+    """Load candidates.csv using the baseline candidate schema."""
     return load_csv(path, REQUIRED_CANDIDATE_COLUMNS)
 
 
 def load_jobs(path: str | Path) -> pd.DataFrame:
-    """Load job-description data."""
+    """Load jobs.csv using the baseline job schema."""
     return load_csv(path, REQUIRED_JOB_COLUMNS)

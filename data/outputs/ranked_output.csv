@@ -1,0 +1,11 @@
+job_id,candidate_id,rank,final_score,explanation
+J001,C001,1,70.89,"Semantic fit: 76.70%. Keyword fit: 46.78%. Skill coverage: 100.00%. Matched skills: machine learning, pandas, python, scikit-learn, sql. Missing required skills: none."
+J001,C002,2,47.72,"Semantic fit: 69.37%. Keyword fit: 12.88%. Skill coverage: 60.00%. Matched skills: pandas, python, sql. Missing required skills: machine learning, scikit-learn."
+J001,C004,3,38.12,"Semantic fit: 52.89%. Keyword fit: 18.06%. Skill coverage: 40.00%. Matched skills: machine learning, python. Missing required skills: pandas, scikit-learn, sql."
+J001,C005,4,36.74,"Semantic fit: 65.15%. Keyword fit: 9.77%. Skill coverage: 20.00%. Matched skills: sql. Missing required skills: machine learning, pandas, python, scikit-learn."
+J001,C003,5,14.38,"Semantic fit: 31.96%. Keyword fit: 0.00%. Skill coverage: 0.00%. Matched skills: none. Missing required skills: machine learning, pandas, python, scikit-learn, sql."
+J002,C003,1,71.55,"Semantic fit: 80.78%. Keyword fit: 43.42%. Skill coverage: 100.00%. Matched skills: git, javascript, node.js, react. Missing required skills: none."
+J002,C001,2,13.4,"Semantic fit: 29.77%. Keyword fit: 0.00%. Skill coverage: 0.00%. Matched skills: none. Missing required skills: git, javascript, node.js, react."
+J002,C002,3,12.62,"Semantic fit: 28.05%. Keyword fit: 0.00%. Skill coverage: 0.00%. Matched skills: none. Missing required skills: git, javascript, node.js, react."
+J002,C004,4,10.63,"Semantic fit: 22.44%. Keyword fit: 1.52%. Skill coverage: 0.00%. Matched skills: none. Missing required skills: git, javascript, node.js, react."
+J002,C005,5,10.62,"Semantic fit: 23.59%. Keyword fit: 0.00%. Skill coverage: 0.00%. Matched skills: none. Missing required skills: git, javascript, node.js, react."
