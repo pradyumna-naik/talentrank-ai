@@ -1,0 +1,6 @@
+candidate_id,name,skills,experience_years,profile
+C001,Aarav Mehta,"Python, SQL, pandas, scikit-learn, machine learning, Streamlit, AWS",4,"Data scientist who builds production analytics and machine-learning dashboards for business teams."
+C002,Diya Shah,"Python, SQL, pandas, data visualization, Tableau, Excel",3,"Analytics specialist experienced in reporting, SQL analysis, and stakeholder dashboards."
+C003,Rohan Kumar,"JavaScript, React, Node.js, Git, Docker",4,"Frontend engineer building React platforms and Node.js services."
+C004,Meera Iyer,"Python, numpy, PyTorch, NLP, machine learning",2,"Machine learning engineer focused on NLP experimentation and model evaluation."
+C005,Kabir Singh,"SQL, Power BI, Excel, data visualization, Azure",5,"Business intelligence analyst with deep dashboard and warehouse experience."

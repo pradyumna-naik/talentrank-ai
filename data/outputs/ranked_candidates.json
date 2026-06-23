@@ -1,0 +1,62 @@
+[
+  {
+    "candidate_id": "C001",
+    "name": "Aarav Mehta",
+    "experience_years": 4.0,
+    "matched_skills": "aws, machine learning, pandas, python, scikit-learn, sql, streamlit",
+    "missing_skills": "data visualization",
+    "relevance_score": 42.09,
+    "skill_score": 87.5,
+    "experience_score": 100.0,
+    "final_score": 66.67,
+    "explanation": "Matches: aws, machine learning, pandas, python, scikit-learn, sql, streamlit. Experience: 4 years. Gaps: data visualization."
+  },
+  {
+    "candidate_id": "C002",
+    "name": "Diya Shah",
+    "experience_years": 3.0,
+    "matched_skills": "data visualization, pandas, python, sql",
+    "missing_skills": "aws, machine learning, scikit-learn, streamlit",
+    "relevance_score": 16.59,
+    "skill_score": 50.0,
+    "experience_score": 100.0,
+    "final_score": 40.79,
+    "explanation": "Matches: data visualization, pandas, python, sql. Experience: 3 years. Gaps: aws, machine learning, scikit-learn, streamlit."
+  },
+  {
+    "candidate_id": "C005",
+    "name": "Kabir Singh",
+    "experience_years": 5.0,
+    "matched_skills": "data visualization, sql",
+    "missing_skills": "aws, machine learning, pandas, python, scikit-learn, streamlit",
+    "relevance_score": 13.36,
+    "skill_score": 25.0,
+    "experience_score": 100.0,
+    "final_score": 30.43,
+    "explanation": "Matches: data visualization, sql. Experience: 5 years. Gaps: aws, machine learning, pandas, python, scikit-learn, streamlit."
+  },
+  {
+    "candidate_id": "C004",
+    "name": "Meera Iyer",
+    "experience_years": 2.0,
+    "matched_skills": "machine learning, python",
+    "missing_skills": "aws, data visualization, pandas, scikit-learn, sql, streamlit",
+    "relevance_score": 11.86,
+    "skill_score": 25.0,
+    "experience_score": 66.67,
+    "final_score": 24.68,
+    "explanation": "Matches: machine learning, python. Experience: 2 years. Gaps: aws, data visualization, pandas, scikit-learn, sql, streamlit."
+  },
+  {
+    "candidate_id": "C003",
+    "name": "Rohan Kumar",
+    "experience_years": 4.0,
+    "matched_skills": "",
+    "missing_skills": "aws, data visualization, machine learning, pandas, python, scikit-learn, sql, streamlit",
+    "relevance_score": 0.0,
+    "skill_score": 0.0,
+    "experience_score": 100.0,
+    "final_score": 15.0,
+    "explanation": "Matches: no explicitly detected job skills. Experience: 4 years. Gaps: aws, data visualization, machine learning, pandas, python, scikit-learn, sql, streamlit."
+  }
+]
