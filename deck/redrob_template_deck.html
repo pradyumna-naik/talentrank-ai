@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>TalentAlchemy — TalentRank AI — Redrob Submission</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  @page { size: 1920px 1080px; margin: 0; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: 'Manrope', sans-serif; }
+  .slide {
+    width: 1920px;
+    height: 1080px;
+    position: relative;
+    page-break-after: always;
+    overflow: hidden;
+  }
+  .slide:last-child { page-break-after: auto; }
+  .slide img.bg {
+    position: absolute;
+    top: 0; left: 0;
+    width: 1920px;
+    height: 1080px;
+    z-index: 0;
+  }
+  .box {
+    position: absolute;
+    color: #202729;
+    z-index: 1;
+  }
+  .heading {
+    font-weight: 800;
+    font-size: 44px;
+    line-height: 1.15;
+  }
+  .question {
+    font-weight: 600;
+    font-size: 34px;
+    line-height: 1.35;
+    margin: 0 0 4px 0;
+  }
+  .answer {
+    font-weight: 400;
+    font-size: 27px;
+    line-height: 1.45;
+    margin: 0 0 26px 0;
+  }
+  .field-line {
+    font-weight: 600;
+    font-size: 34px;
+    line-height: 1.3;
+  }
+  .field-line .answer-inline {
+    font-weight: 400;
+  }
+</style>
+</head>
+<body>
+
+<!-- Slide 1: Title / Team info -->
+<div class="slide">
+  <img class="bg" src="redrob_assets/title_bg.png">
+  <div class="box field-line" style="left:3.4088%; top:59.591%; width:93.1824%; height:8.6264%;">
+    Team Name : <span class="answer-inline">TalentAlchemy</span>
+  </div>
+  <div class="box field-line" style="left:3.4087%; top:67.512%; width:93.1824%; height:8.6264%;">
+    Team Leader Name : <span class="answer-inline">Sanjana</span>
+  </div>
+  <div class="box field-line" style="left:3.4088%; top:76.140%; width:93.1824%; height:7.9440%; font-size:30px;">
+    Problem Statement : <span class="answer-inline">Recruiters reviewing large candidate pools rely on brittle keyword filters that miss relevant candidates and give no explainable evidence for shortlist decisions.</span>
+  </div>
+</div>
+
+<!-- Slide 2: Solution Overview -->
+<div class="slide">
+  <img class="bg" src="redrob_assets/content_bg.png">
+  <div class="box heading" style="left:5.2548%; top:15.799%; width:26.2795%; height:9.0580%;">Solution Overview</div>
+  <div class="box" style="left:4.1076%; top:24.848%; width:93.1824%; height:63.319%;">
+    <p class="question">What is your proposed solution?</p>
+    <p class="answer">TalentRank AI is a recruiter decision-support engine. It parses a job description into structured intelligence, builds privacy-safe candidate profiles, retrieves the top 50 matches using a hybrid of TF-IDF and MiniLM semantic embeddings plus skill coverage, optionally reranks with a CrossEncoder, and returns a ranked shortlist where every candidate carries a structured, evidence-backed explanation card.</p>
+    <p class="question">What differentiates your approach from traditional candidate matching systems?</p>
+    <p class="answer">Instead of pure keyword filtering or a single black-box score, we combine lexical, semantic, and structured skill/experience/activity signals into one transparent formula, retrieve-then-rerank with an optional CrossEncoder for accuracy without full-pool latency cost, and generate a rule-based (not LLM-generated) explanation card for every candidate — sensitive attributes are structurally excluded from ranking.</p>
+  </div>
+</div>
+
+<!-- Slide 3: JD Understanding & Candidate Evaluation -->
+<div class="slide">
+  <img class="bg" src="redrob_assets/content_bg.png">
+  <div class="box heading" style="left:5.2548%; top:15.799%; width:88.8189%; height:9.0580%;">JD Understanding &amp; Candidate Evaluation</div>
+  <div class="box" style="left:4.1076%; top:24.848%; width:93.1824%; height:62.193%;">
+    <p class="question">What are the key requirements extracted from the JD?</p>
+    <p class="answer">A rule-based parser extracts role title, seniority level, must-have and nice-to-have skills (via a skill taxonomy with regex aliases plus cue-phrase detection like "required" / "nice to have"), responsibilities (sentences containing action verbs), inferred domain, and minimum/maximum experience from explicit fields or free text.</p>
+    <p class="question">Which candidate signals are most important for determining relevance? / How does your solution evaluate candidate fit beyond keyword matching?</p>
+    <p class="answer">Skill coverage against must-have requirements, semantic similarity, lexical overlap, experience fit, and recent activity are the five signals used. Fit beyond keywords comes from the MiniLM semantic embedding, which captures conceptual overlap (e.g. "led a team" ~ "management experience") even without exact keyword matches, backed by project/summary evidence in the explanation card.</p>
+  </div>
+</div>
+
+<!-- Slide 4: Ranking Methodology -->
+<div class="slide">
+  <img class="bg" src="redrob_assets/content_bg.png">
+  <div class="box heading" style="left:5.2548%; top:15.799%; width:88.8189%; height:9.0580%;">Ranking Methodology</div>
+  <div class="box" style="left:4.1076%; top:24.848%; width:93.1824%; height:62.193%;">
+    <p class="question">How does your system retrieve, score, and rank candidates?</p>
+    <p class="answer">Retrieval scores the full pool with a hybrid formula (0.45×semantic + 0.35×TF-IDF + 0.20×skill match) and keeps the top 50. If CrossEncoder reranking is enabled, those 50 are rescored with a pairwise CrossEncoder. Final ranking combines all evidence into one weighted 0–100 score per candidate, sorted descending per job.</p>
+    <p class="question">What models, algorithms, or heuristics are used?</p>
+    <p class="answer">scikit-learn TF-IDF + cosine similarity; Sentence-Transformers MiniLM (all-MiniLM-L6-v2) for semantic embeddings, cached and fingerprinted by profile-text hash; an optional Sentence-Transformers CrossEncoder (ms-marco-MiniLM-L-6-v2) for pairwise reranking; rule-based heuristics for skill coverage, experience fit, and activity normalization.</p>
+    <p class="question">How are multiple candidate signals combined into a final ranking?</p>
+    <p class="answer">final_score = 0.30×cross_encoder + 0.20×skill_match + 0.20×semantic + 0.15×tfidf + 0.10×experience_match + 0.05×activity. When CrossEncoder is disabled, its 30% weight redistributes equally to semantic and skill match (0.35 / 0.35 / 0.15 / 0.10 / 0.05).</p>
+  </div>
+</div>
+
+<!-- Slide 5: Explainability & Data Validation -->
+<div class="slide">
+  <img class="bg" src="redrob_assets/content_bg.png">
+  <div class="box heading" style="left:5.2548%; top:15.799%; width:88.8189%; height:9.0580%;">Explainability &amp; Data Validation</div>
+  <div class="box" style="left:4.1076%; top:24.848%; width:93.1824%; height:62.193%;">
+    <p class="question">How are ranking decisions explained?</p>
+    <p class="answer">Every candidate gets a rule-based explanation card: a fit summary, matched/missing must-have and nice-to-have skills, an experience-fit sentence, a project-evidence sentence, an activity-evidence sentence, a confidence tier (High/Medium/Low), and an explicit risk-or-gap statement.</p>
+    <p class="question">How do you prevent hallucinations or unsupported justifications?</p>
+    <p class="answer">Explanations are template-generated from the same computed numbers used for scoring, not produced by an LLM — every sentence is deterministically derived from a candidate's actual skills, experience, and activity fields, so there is nothing to hallucinate. Skill matches are only reported if they exist verbatim in the candidate's data.</p>
+    <p class="question">How does your solution handle inconsistent, low-quality, or suspicious profiles?</p>
+    <p class="answer">Text normalization (lowercasing, whitespace collapse, delimiter-aware skill splitting) handles inconsistent formatting; missing numeric fields are coerced safely rather than crashing; candidates with no matching skills or below-minimum experience are still ranked but surface an explicit gap statement, keeping the recruiter in control.</p>
+  </div>
+</div>
+
+<!-- Slide 6: End-to-End Workflow -->
+<div class="slide">
+  <img class="bg" src="redrob_assets/content_bg.png">
+  <div class="box heading" style="left:5.2548%; top:15.799%; width:88.8189%; height:9.0580%;">End-to-End Workflow</div>
+  <div class="box" style="left:4.1076%; top:24.848%; width:93.1824%; height:62.193%;">
+    <p class="question">What is the complete workflow from JD input to ranked candidate output?</p>
+    <p class="answer">JD CSV row → rule-based JD parser extracts structured intelligence → candidate CSV rows → privacy-safe profile text builder (excludes sensitive fields) → cached MiniLM embeddings + TF-IDF vectorization → hybrid top-50 retrieval → optional CrossEncoder pairwise rerank → weighted final score + explanation card per candidate → ranked_output.csv / .json / .xlsx and a Responsible-AI feature report, also rendered live in the Streamlit dashboard.</p>
+  </div>
+</div>
+
+<!-- Slide 7: System Architecture (diagram) -->
+<div class="slide">
+  <img class="bg" src="redrob_assets/content_bg.png">
+  <div class="box heading" style="left:5.2548%; top:15.799%; width:88.8189%; height:9.0580%;">System Architecture</div>
+  <div class="box" style="left:4.1076%; top:26.5%; width:93.1824%; height:60%;">
+    <svg width="100%" height="560" viewBox="0 0 1780 560">
+      <defs>
+        <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+          <path d="M0,0 L8,3 L0,6" fill="none" stroke="#202729" stroke-width="1.4"></path>
+        </marker>
+      </defs>
+      <!-- row 1 -->
+      <g font-family="Manrope" font-weight="600" font-size="24" fill="#202729">
+        <rect x="10" y="20" width="300" height="90" rx="10" fill="none" stroke="#202729" stroke-width="2"></rect>
+        <text x="160" y="58" text-anchor="middle">Job CSV</text>
+        <text x="160" y="88" text-anchor="middle" font-weight="400" font-size="20">JD Parser</text>
+
+        <line x1="310" y1="65" x2="380" y2="65" stroke="#202729" stroke-width="2" marker-end="url(#arrow)"></line>
+
+        <rect x="390" y="20" width="330" height="90" rx="10" fill="none" stroke="#202729" stroke-width="2"></rect>
+        <text x="555" y="58" text-anchor="middle">Job Profile Text</text>
+        <text x="555" y="88" text-anchor="middle" font-weight="400" font-size="20">(structured intelligence)</text>
+
+        <line x1="720" y1="65" x2="790" y2="65" stroke="#202729" stroke-width="2" marker-end="url(#arrow)"></line>
+
+        <rect x="800" y="20" width="330" height="90" rx="10" fill="none" stroke="#202729" stroke-width="2"></rect>
+        <text x="965" y="58" text-anchor="middle">TF-IDF + MiniLM</text>
+        <text x="965" y="88" text-anchor="middle" font-weight="400" font-size="20">semantic + lexical scoring</text>
+
+        <line x1="1130" y1="65" x2="1200" y2="65" stroke="#202729" stroke-width="2" marker-end="url(#arrow)"></line>
+
+        <rect x="1210" y="20" width="330" height="90" rx="10" fill="none" stroke="#202729" stroke-width="2"></rect>
+        <text x="1375" y="58" text-anchor="middle">Hybrid Top-50</text>
+        <text x="1375" y="88" text-anchor="middle" font-weight="400" font-size="20">retrieval shortlist</text>
+
+        <line x1="1375" y1="110" x2="1375" y2="180" stroke="#202729" stroke-width="2" marker-end="url(#arrow)"></line>
+      </g>
+
+      <!-- row 2 -->
+      <g font-family="Manrope" font-weight="600" font-size="24" fill="#202729">
+        <rect x="10" y="20" width="300" height="90" rx="10" fill="none" stroke="#202729" stroke-width="2" transform="translate(0,160)"></rect>
+        <text x="160" y="218" text-anchor="middle">Candidate CSV</text>
+        <text x="160" y="248" text-anchor="middle" font-weight="400" font-size="20">privacy-safe profile builder</text>
+
+        <line x1="310" y1="225" x2="380" y2="225" stroke="#202729" stroke-width="2" marker-end="url(#arrow)"></line>
+
+        <rect x="390" y="180" width="330" height="90" rx="10" fill="none" stroke="#202729" stroke-width="2"></rect>
+        <text x="555" y="218" text-anchor="middle">Candidate Profile Text</text>
+        <text x="555" y="248" text-anchor="middle" font-weight="400" font-size="20">(sensitive fields excluded)</text>
+
+        <line x1="720" y1="225" x2="790" y2="225" stroke="#202729" stroke-width="2" marker-end="url(#arrow)"></line>
+
+        <rect x="800" y="180" width="330" height="90" rx="10" fill="none" stroke="#202729" stroke-width="2"></rect>
+        <text x="965" y="218" text-anchor="middle">Cached MiniLM</text>
+        <text x="965" y="248" text-anchor="middle" font-weight="400" font-size="20">candidate embeddings</text>
+
+        <line x1="1130" y1="225" x2="1210" y2="225" stroke="#202729" stroke-width="2" marker-end="url(#arrow)"></line>
+      </g>
+
+      <!-- row 3 -->
+      <g font-family="Manrope" font-weight="600" font-size="24" fill="#202729">
+        <rect x="1210" y="180" width="330" height="90" rx="10" fill="none" stroke="#202729" stroke-width="2"></rect>
+        <text x="1375" y="218" text-anchor="middle">CrossEncoder?</text>
+        <text x="1375" y="248" text-anchor="middle" font-weight="400" font-size="20">optional pairwise rerank</text>
+
+        <line x1="1375" y1="270" x2="1375" y2="330" stroke="#202729" stroke-width="2" marker-end="url(#arrow)"></line>
+
+        <rect x="1090" y="340" width="450" height="90" rx="10" fill="none" stroke="#202729" stroke-width="2"></rect>
+        <text x="1315" y="378" text-anchor="middle">Weighted Final Score</text>
+        <text x="1315" y="408" text-anchor="middle" font-weight="400" font-size="20">skill + experience + activity + evidence</text>
+
+        <line x1="1090" y1="385" x2="640" y2="385" stroke="#202729" stroke-width="2" marker-end="url(#arrow)"></line>
+
+        <rect x="330" y="340" width="310" height="90" rx="10" fill="none" stroke="#202729" stroke-width="2"></rect>
+        <text x="485" y="378" text-anchor="middle">Explanation Card</text>
+        <text x="485" y="408" text-anchor="middle" font-weight="400" font-size="20">evidence + gaps + confidence</text>
+
+        <line x1="330" y1="385" x2="20" y2="385" stroke="#202729" stroke-width="2" marker-end="url(#arrow)"></line>
+
+        <rect x="10" y="340" width="310" height="90" rx="10" fill="none" stroke="#202729" stroke-width="2"></rect>
+        <text x="165" y="378" text-anchor="middle">Ranked Output</text>
+        <text x="165" y="408" text-anchor="middle" font-weight="400" font-size="20">CSV / JSON / XLSX</text>
+
+        <line x1="165" y1="430" x2="165" y2="480" stroke="#202729" stroke-width="2" marker-end="url(#arrow)"></line>
+        <rect x="10" y="480" width="620" height="70" rx="10" fill="none" stroke="#202729" stroke-width="2"></rect>
+        <text x="320" y="522" text-anchor="middle" font-size="22">Streamlit Dashboard (7-page recruiter UI)</text>
+      </g>
+    </svg>
+  </div>
+</div>
+
+<!-- Slide 8: Results & Performance -->
+<div class="slide">
+  <img class="bg" src="redrob_assets/content_bg.png">
+  <div class="box heading" style="left:5.2548%; top:15.799%; width:88.8189%; height:9.0580%;">Results &amp; Performance</div>
+  <div class="box" style="left:4.1076%; top:24.848%; width:93.1824%; height:62.193%;">
+    <p class="question">What results or insights demonstrate ranking quality?</p>
+    <p class="answer">On our sample dataset, ranking clearly separates strong from limited fits — for the DevOps role, the candidate matching 5/5 required skills scores 85.9 vs. 12.4 for a 0/5-skill candidate, and below-minimum-experience candidates are automatically flagged in their risk statement. With relevance labels, the Evaluation page reports Precision@5/@10, Recall@10, NDCG@10, and MRR; without labels it reports top-10 skill coverage, semantic score, and experience match, plus an ablation comparing TF-IDF-only, Semantic-only, Hybrid, and Hybrid+CrossEncoder variants.</p>
+    <p class="question">How does your solution meet the challenge's runtime and compute constraints?</p>
+    <p class="answer">Hybrid retrieval scores the full pool with lightweight TF-IDF/cosine math and cached MiniLM embeddings, recomputed only when profile text changes (SHA-256 fingerprint), so repeat runs skip embedding generation. The expensive CrossEncoder pass is optional and restricted to the top-50 shortlist, not the full pool, bounding worst-case latency.</p>
+  </div>
+</div>
+
+<!-- Slide 9: Technologies Used -->
+<div class="slide">
+  <img class="bg" src="redrob_assets/content_bg.png">
+  <div class="box heading" style="left:5.2548%; top:15.799%; width:88.8189%; height:9.0580%;">Technologies Used</div>
+  <div class="box" style="left:4.1076%; top:24.848%; width:93.1824%; height:62.193%;">
+    <p class="question">What technologies, frameworks, and tools were used and why were they selected for this solution?</p>
+    <p class="answer">Python 3.11 for the pipeline; pandas/NumPy for data handling; scikit-learn for TF-IDF and cosine similarity (fast, dependency-light lexical baseline); Sentence-Transformers MiniLM-L6-v2 for semantic embeddings (small, CPU-friendly, strong quality/latency trade-off); Sentence-Transformers CrossEncoder ms-marco-MiniLM-L-6-v2 for optional high-fidelity pairwise reranking; Streamlit for a fast, recruiter-facing dashboard without building a separate frontend; pytest for automated regression tests covering data loading, JD parsing, fairness exclusions, explainability, and evaluation metrics.</p>
+  </div>
+</div>
+
+<!-- Slide 10: Submission Assets -->
+<div class="slide">
+  <img class="bg" src="redrob_assets/content_bg.png">
+  <div class="box heading" style="left:5.2548%; top:15.799%; width:88.8189%; height:9.0580%;">Submission Assets</div>
+  <div class="box" style="left:5.2548%; top:24.848%; width:87.1457%; height:62.193%;">
+    <p class="question">Github video etc</p>
+    <p class="answer">GitHub repository: github.com/pradyumna-naik/talentrank-ai (public — source code, tests, redesigned Streamlit dashboard, README with setup steps, and this deck).<br>
+    Ranked output: data/outputs/ranked_output.csv / .xlsx / .json.<br>
+    Demo: run "streamlit run app/streamlit_app.py" locally per the README, or view the dashboard screenshots included in the repo's deck/ folder.</p>
+  </div>
+</div>
+
+<!-- Slide 11: Thank you -->
+<div class="slide">
+  <img class="bg" src="redrob_assets/thankyou_bg.png">
+</div>
+
+</body>
+</html>
