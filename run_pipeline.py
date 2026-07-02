@@ -202,9 +202,9 @@ def main() -> None:
     responsible_ai_report = build_responsible_ai_report(candidates.columns, jobs.columns)
     report_path = write_used_features_report(responsible_ai_report, OUTPUT_DIR)
     results = rank_all_jobs(jobs, candidates, use_cross_encoder=use_cross_encoder)
-    csv_path, _ = write_outputs(results, OUTPUT_DIR)
+    csv_path, _, xlsx_path = write_outputs(results, OUTPUT_DIR)
     print(results[["job_id", "candidate_id", "rank", "final_score", "explanation"]].to_string(index=False))
-    print(f"\nSaved: {csv_path}\nSaved: {report_path}")
+    print(f"\nSaved: {csv_path}\nSaved: {xlsx_path}\nSaved: {report_path}")
 
 
 if __name__ == "__main__":

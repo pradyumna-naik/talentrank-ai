@@ -1,9 +1,11 @@
 ﻿"""Hackathon demo dashboard for TalentRank AI."""
+from io import BytesIO
 from pathlib import Path
 import sys
 import time
 
 import pandas as pd
+import plotly.graph_objects as go
 import streamlit as st
 
 sys.path.append(str(Path(__file__).resolve().parents[1]))
@@ -16,7 +18,90 @@ from src.jd_parser import parse_jd  # noqa: E402
 from src.output_writer import OUTPUT_COLUMNS  # noqa: E402
 
 
-st.set_page_config(page_title="TalentRank AI", page_icon="TR", layout="wide", initial_sidebar_state="expanded")
+st.set_page_config(page_title="TalentRank AI", page_icon="🧭", layout="wide", initial_sidebar_state="expanded")
+
+CUSTOM_CSS = """
+<style>
+    .stApp { background: radial-gradient(circle at top left, #1b1030 0%, #0E1117 48%); }
+    div[data-testid="stMetric"] {
+        background: linear-gradient(145deg, #1b2030, #12151f);
+        border: 1px solid rgba(139, 92, 246, 0.25);
+        border-radius: 14px;
+        padding: 14px 16px 8px 16px;
+        box-shadow: 0 4px 18px rgba(0,0,0,0.35);
+    }
+    div[data-testid="stMetric"] label { color: #A5B4CF !important; }
+    section[data-testid="stSidebar"] {
+        background: linear-gradient(180deg, #171225 0%, #0E1117 100%);
+        border-right: 1px solid rgba(139, 92, 246, 0.2);
+    }
+    .brand-title {
+        font-size: 1.6rem;
+        font-weight: 800;
+        background: linear-gradient(90deg, #8B5CF6, #22D3EE);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: -6px;
+    }
+    .hero-banner {
+        background: linear-gradient(120deg, rgba(139,92,246,0.18), rgba(34,211,238,0.10));
+        border: 1px solid rgba(139,92,246,0.35);
+        border-radius: 18px;
+        padding: 26px 30px;
+        margin-bottom: 14px;
+    }
+    .fit-badge {
+        display: inline-block;
+        padding: 4px 14px;
+        border-radius: 999px;
+        font-size: 0.82rem;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+    }
+    .fit-strong { background: rgba(34,197,94,0.15); color: #4ADE80; border: 1px solid rgba(74,222,128,0.45); }
+    .fit-moderate { background: rgba(250,204,21,0.15); color: #FACC15; border: 1px solid rgba(250,204,21,0.45); }
+    .fit-limited { background: rgba(248,113,113,0.15); color: #F87171; border: 1px solid rgba(248,113,113,0.45); }
+    .fit-neutral { background: rgba(148,163,184,0.15); color: #CBD5E1; border: 1px solid rgba(148,163,184,0.45); }
+    .podium-card {
+        background: linear-gradient(160deg, #1b2030, #12151f);
+        border: 1px solid rgba(139,92,246,0.25);
+        border-radius: 14px;
+        padding: 16px 18px;
+        height: 100%;
+    }
+    .podium-rank {
+        font-size: 1.6rem;
+        font-weight: 800;
+        color: #8B5CF6;
+    }
+    div[data-testid="stDataFrame"] { border-radius: 12px; overflow: hidden; }
+</style>
+"""
+st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
+
+PAGE_ICONS = {
+    "Home": "🏠",
+    "JD Intelligence": "🧭",
+    "Ranked Candidates": "🏆",
+    "Candidate Explanation": "🔍",
+    "Evaluation": "📊",
+    "Responsible AI": "🛡️",
+    "Export Output": "📤",
+}
+
+
+def fit_badge_html(text: str) -> str:
+    """Map a fit-summary sentence to a color-coded badge."""
+    lowered = text.lower()
+    if "strong fit" in lowered:
+        css_class, label = "fit-strong", "Strong fit"
+    elif "moderate fit" in lowered:
+        css_class, label = "fit-moderate", "Moderate fit"
+    elif "limited fit" in lowered:
+        css_class, label = "fit-limited", "Limited fit"
+    else:
+        css_class, label = "fit-neutral", "Reviewed"
+    return f'<span class="fit-badge {css_class}">{label}</span>'
 
 
 @st.cache_data
@@ -68,8 +153,28 @@ def score_breakdown(candidate: pd.Series) -> None:
     for index, (label, field) in enumerate(fields):
         value = candidate[field]
         cards[index % 4].metric(label, "Not used" if pd.isna(value) else f"{value:.1f}")
-    chart = pd.DataFrame({"component": [label for label, _ in fields], "score": [candidate[field] if pd.notna(candidate[field]) else 0 for _, field in fields]})
-    st.bar_chart(chart.set_index("component"), height=250)
+    labels = [label for label, _ in fields]
+    values = [candidate[field] if pd.notna(candidate[field]) else 0 for _, field in fields]
+    figure = go.Figure(
+        go.Bar(
+            x=values,
+            y=labels,
+            orientation="h",
+            marker=dict(color=values, colorscale=[[0, "#F87171"], [0.5, "#FACC15"], [1, "#4ADE80"]], cmin=0, cmax=100),
+            text=[f"{value:.1f}" for value in values],
+            textposition="outside",
+        )
+    )
+    figure.update_layout(
+        height=280,
+        margin=dict(l=10, r=10, t=10, b=10),
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        font=dict(color="#E6EDF3"),
+        xaxis=dict(range=[0, 112], gridcolor="rgba(148,163,184,0.15)"),
+        yaxis=dict(autorange="reversed"),
+    )
+    st.plotly_chart(figure, use_container_width=True)
 
 
 def explanation_card(candidate: pd.Series) -> None:
@@ -92,9 +197,10 @@ jobs, candidates = get_data()
 responsible_report = build_responsible_ai_report(candidates.columns, jobs.columns)
 
 with st.sidebar:
-    st.header("TalentRank AI")
+    st.markdown('<div class="brand-title">🧭 TalentRank AI</div>', unsafe_allow_html=True)
     st.caption("Explainable AI Candidate Discovery Engine")
-    page = st.radio("Demo pages", ["Home", "JD Intelligence", "Ranked Candidates", "Candidate Explanation", "Evaluation", "Responsible AI", "Export Output"])
+    st.divider()
+    page = st.radio("Demo pages", list(PAGE_ICONS), format_func=lambda label: f"{PAGE_ICONS[label]}  {label}")
     st.divider()
     labels = {str(row.job_id): f"{row.job_id} — {row.title}" for row in jobs.itertuples()}
     selected_job_id = st.selectbox("Active job", list(labels), format_func=labels.get)
@@ -111,15 +217,17 @@ if run_requested:
 results = active_results()
 
 if page == "Home":
-    title_block("TalentRank AI", "Explainable AI Candidate Discovery Engine")
+    title_block("🏠 TalentRank AI", "Explainable AI Candidate Discovery Engine")
+    st.markdown('<div class="hero-banner">', unsafe_allow_html=True)
     hero, status = st.columns([2, 1])
     with hero:
-        st.markdown("### Explainable candidate discovery for fast, defensible shortlists")
+        st.markdown("### ✨ Explainable candidate discovery for fast, defensible shortlists")
         st.write("Combine job intelligence, semantic relevance, skills, experience, activity, and optional CrossEncoder evidence in one recruiter-ready workflow.")
         st.caption(DISCLAIMER)
     with status:
         st.metric("Active role", intelligence.role_title)
         st.metric("Available candidates", len(candidates))
+    st.markdown("</div>", unsafe_allow_html=True)
     cards = st.columns(4)
     cards[0].metric("Jobs", len(jobs))
     cards[1].metric("Must-have skills", len(intelligence.must_have_skills))
@@ -134,7 +242,7 @@ if page == "Home":
         require_results(results)
 
 elif page == "JD Intelligence":
-    title_block("JD Intelligence", "Rule-based role, skill, responsibility, and experience extraction")
+    title_block("🧭 JD Intelligence", "Rule-based role, skill, responsibility, and experience extraction")
     with st.expander("Original job description", expanded=True):
         st.write(job["description"])
     cards = st.columns(5)
@@ -149,20 +257,37 @@ elif page == "JD Intelligence":
     columns[2].markdown("**Responsibilities**\n\n" + ("\n\n".join(f"- {item}" for item in intelligence.responsibilities) or "Not specified"))
 
 elif page == "Ranked Candidates":
-    title_block("Ranked Candidates", "Shortlist ordered by explainable evidence")
+    title_block("🏆 Ranked Candidates", "Shortlist ordered by explainable evidence")
     if require_results(results):
         cards = st.columns(4)
         cards[0].metric("Shortlist", len(results))
         cards[1].metric("Top score", f"{results.iloc[0]['final_score']:.1f}")
         cards[2].metric("Average score", f"{results['final_score'].mean():.1f}")
         cards[3].metric("Latency", f"{st.session_state.get('ranking_latency_seconds', 0.0):.2f}s")
+
+        st.subheader("Podium")
+        podium = st.columns(min(3, len(results)))
+        for column, (_, row) in zip(podium, results.head(3).iterrows()):
+            badge = fit_badge_html(row["explanation_card"]["fit_summary"])
+            column.markdown(
+                f"""<div class="podium-card">
+                    <div class="podium-rank">#{row['rank']}</div>
+                    <div style="font-weight:600; margin-bottom:6px;">{row['candidate_id']}</div>
+                    {badge}
+                    <div style="margin-top:10px; font-size:1.4rem; font-weight:700;">{row['final_score']:.1f}</div>
+                    <div style="color:#94A3B8; font-size:0.8rem;">final score</div>
+                </div>""",
+                unsafe_allow_html=True,
+            )
+
+        st.subheader("Full shortlist")
         columns = ["rank", "candidate_id", "final_score", "cross_encoder_score", "semantic_score", "tfidf_score", "skill_match_score", "experience_match_score", "activity_score"]
         st.dataframe(results[columns], use_container_width=True, hide_index=True)
         with st.expander("Score guide"):
             st.write("Final score combines semantic relevance, TF-IDF, skill coverage, experience, activity, and optional CrossEncoder reranking.")
 
 elif page == "Candidate Explanation":
-    title_block("Candidate Explanation", "Explanation card and score breakdown")
+    title_block("🔍 Candidate Explanation", "Explanation card and score breakdown")
     if require_results(results):
         candidate_id = st.selectbox("Select candidate", results["candidate_id"].tolist(), format_func=lambda value: f"#{results.loc[results['candidate_id'] == value, 'rank'].iloc[0]} — {value}")
         candidate = results[results["candidate_id"] == candidate_id].iloc[0]
@@ -170,12 +295,13 @@ elif page == "Candidate Explanation":
         cards[0].metric("Rank", f"#{candidate['rank']}")
         cards[1].metric("Final score", f"{candidate['final_score']:.1f}")
         cards[2].metric("Confidence", candidate["explanation_card"]["confidence_level"])
+        st.markdown(fit_badge_html(candidate["explanation_card"]["fit_summary"]), unsafe_allow_html=True)
         explanation_card(candidate)
         st.subheader("Score breakdown")
         score_breakdown(candidate)
 
 elif page == "Evaluation":
-    title_block("Evaluation", "Validate ranking quality with labels or top-10 diagnostics")
+    title_block("📊 Evaluation", "Validate ranking quality with labels or top-10 diagnostics")
     if require_results(results):
         uploaded_labels = st.file_uploader("Optional relevance labels CSV", type="csv", help="Required columns: job_id, candidate_id, relevance")
         labels_frame = pd.read_csv(uploaded_labels) if uploaded_labels is not None else None
@@ -190,7 +316,7 @@ elif page == "Evaluation":
         st.dataframe(build_ablation_table(results, labels_frame, latency), use_container_width=True, hide_index=True)
 
 elif page == "Responsible AI":
-    title_block("Responsible AI", "Safeguards, exclusions, and human oversight")
+    title_block("🛡️ Responsible AI", "Safeguards, exclusions, and human oversight")
     st.info(DISCLAIMER)
     cards = st.columns(3)
     cards[0].metric("Sensitive fields detected", len(responsible_report["sensitive_columns_detected"]))
@@ -203,7 +329,7 @@ elif page == "Responsible AI":
     st.caption("Sensitive fields are never added to profile text, ranking scores, or shortlist outputs.")
 
 else:
-    title_block("Export Output", "Download the shortlist in the required delivery format")
+    title_block("📤 Export Output", "Download the shortlist in the required delivery format")
     if require_results(results):
         export_data = results.loc[:, OUTPUT_COLUMNS]
         cards = st.columns(3)
@@ -211,6 +337,10 @@ else:
         cards[1].metric("Columns", len(export_data.columns))
         cards[2].metric("File", "ranked_output.csv")
         st.dataframe(export_data, use_container_width=True, hide_index=True)
-        st.download_button("Download ranked_output.csv", export_data.to_csv(index=False), "ranked_output.csv", "text/csv", type="primary", use_container_width=True)
+        download_cols = st.columns(2)
+        excel_buffer = BytesIO()
+        export_data.to_excel(excel_buffer, index=False, sheet_name="ranked_candidates")
+        download_cols[0].download_button("⬇ Download ranked_output.csv", export_data.to_csv(index=False), "ranked_output.csv", "text/csv", type="primary", use_container_width=True)
+        download_cols[1].download_button("⬇ Download ranked_output.xlsx", excel_buffer.getvalue(), "ranked_output.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", use_container_width=True)
         with st.expander("Export schema"):
             st.code(", ".join(OUTPUT_COLUMNS))
