@@ -1,3 +1,5 @@
 ﻿job_id,title,description,required_skills,preferred_skills,min_experience,max_experience
 J001,Data Scientist,"Build machine-learning models and analytics products for business teams.","Python, SQL, pandas, scikit-learn, machine learning","Streamlit, AWS, data visualization",3,6
 J002,Frontend Engineer,"Build accessible web applications and API integrations.","JavaScript, React, Node.js, Git","Docker",2,5
+J003,Backend Engineer,"Design and maintain scalable backend services and REST APIs for internal products.","Python, Django, PostgreSQL, REST APIs","Docker, AWS, Redis",2,5
+J004,DevOps Engineer,"Own CI/CD pipelines and cloud infrastructure for microservices deployments.","AWS, Docker, Kubernetes, Terraform, CI/CD","Python, Linux",3,7

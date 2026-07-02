@@ -3,34 +3,69 @@
     "job_id": "J001",
     "candidate_id": "C001",
     "rank": 1,
-    "final_score": 83.26,
+    "final_score": 83.45,
     "explanation": "Candidate C001 is a strong fit because they match 5/5 required skills and have 4 years of experience for the 3-6 year role range. Projects are listed, but no direct job-skill evidence was detected."
   },
   {
     "job_id": "J001",
     "candidate_id": "C002",
     "rank": 2,
-    "final_score": 61.01,
+    "final_score": 61.09,
     "explanation": "Candidate C002 is a moderate fit because they match 3/5 required skills and have 3 years of experience for the 3-6 year role range. Project experience mentions SQL."
   },
   {
     "job_id": "J001",
-    "candidate_id": "C004",
+    "candidate_id": "C009",
     "rank": 3,
-    "final_score": 45.49,
+    "final_score": 60.27,
+    "explanation": "Candidate C009 is a moderate fit because they match 4/5 required skills and have 1 years of experience, below the 3-year minimum. Projects are listed, but no direct job-skill evidence was detected."
+  },
+  {
+    "job_id": "J001",
+    "candidate_id": "C004",
+    "rank": 4,
+    "final_score": 45.41,
     "explanation": "Candidate C004 is a moderate fit because they match 2/5 required skills and have 2 years of experience, below the 3-year minimum. Project experience mentions Machine Learning."
   },
   {
     "job_id": "J001",
     "candidate_id": "C005",
-    "rank": 4,
-    "final_score": 44.77,
+    "rank": 5,
+    "final_score": 44.99,
     "explanation": "Candidate C005 is a limited fit because they match 1/5 required skills and have 5 years of experience for the 3-6 year role range. Projects are listed, but no direct job-skill evidence was detected."
   },
   {
     "job_id": "J001",
+    "candidate_id": "C006",
+    "rank": 6,
+    "final_score": 36.6,
+    "explanation": "Candidate C006 is a limited fit because they match 1/5 required skills and have 3 years of experience for the 3-6 year role range. Projects are listed, but no direct job-skill evidence was detected."
+  },
+  {
+    "job_id": "J001",
+    "candidate_id": "C010",
+    "rank": 7,
+    "final_score": 35.06,
+    "explanation": "Candidate C010 is a limited fit because they match 1/5 required skills and have 6 years of experience for the 3-6 year role range. Projects are listed, but no direct job-skill evidence was detected."
+  },
+  {
+    "job_id": "J001",
+    "candidate_id": "C008",
+    "rank": 8,
+    "final_score": 32.7,
+    "explanation": "Candidate C008 is a limited fit because they match 1/5 required skills and have 3 years of experience for the 3-6 year role range. Projects are listed, but no direct job-skill evidence was detected."
+  },
+  {
+    "job_id": "J001",
+    "candidate_id": "C007",
+    "rank": 9,
+    "final_score": 28.45,
+    "explanation": "Candidate C007 is a limited fit because they match 0/5 required skills and have 5 years of experience for the 3-6 year role range. Projects are listed, but no direct job-skill evidence was detected."
+  },
+  {
+    "job_id": "J001",
     "candidate_id": "C003",
-    "rank": 5,
+    "rank": 10,
     "final_score": 25.24,
     "explanation": "Candidate C003 is a limited fit because they match 0/5 required skills and have 4 years of experience for the 3-6 year role range. Projects are listed, but no direct job-skill evidence was detected."
   },
@@ -38,35 +73,210 @@
     "job_id": "J002",
     "candidate_id": "C003",
     "rank": 1,
-    "final_score": 83.83,
+    "final_score": 83.61,
     "explanation": "Candidate C003 is a strong fit because they match 4/4 required skills and have 4 years of experience for the 2-5 year role range. Project experience mentions React, Node.js."
   },
   {
     "job_id": "J002",
-    "candidate_id": "C001",
+    "candidate_id": "C008",
     "rank": 2,
+    "final_score": 79.57,
+    "explanation": "Candidate C008 is a strong fit because they match 4/4 required skills and have 3 years of experience for the 2-5 year role range. Project experience mentions React, Node.js."
+  },
+  {
+    "job_id": "J002",
+    "candidate_id": "C006",
+    "rank": 3,
+    "final_score": 35.21,
+    "explanation": "Candidate C006 is a limited fit because they match 0/4 required skills and have 3 years of experience for the 2-5 year role range. Projects are listed, but no direct job-skill evidence was detected."
+  },
+  {
+    "job_id": "J002",
+    "candidate_id": "C007",
+    "rank": 4,
+    "final_score": 29.87,
+    "explanation": "Candidate C007 is a limited fit because they match 0/4 required skills and have 5 years of experience for the 2-5 year role range. Projects are listed, but no direct job-skill evidence was detected."
+  },
+  {
+    "job_id": "J002",
+    "candidate_id": "C010",
+    "rank": 5,
+    "final_score": 28.96,
+    "explanation": "Candidate C010 is a limited fit because they match 0/4 required skills and have 6 years of experience, above the 5-year maximum. Projects are listed, but no direct job-skill evidence was detected."
+  },
+  {
+    "job_id": "J002",
+    "candidate_id": "C001",
+    "rank": 6,
     "final_score": 24.82,
     "explanation": "Candidate C001 is a limited fit because they match 0/4 required skills and have 4 years of experience for the 2-5 year role range. Projects are listed, but no direct job-skill evidence was detected."
   },
   {
     "job_id": "J002",
     "candidate_id": "C002",
-    "rank": 3,
+    "rank": 7,
     "final_score": 23.62,
     "explanation": "Candidate C002 is a limited fit because they match 0/4 required skills and have 3 years of experience for the 2-5 year role range. Projects are listed, but no direct job-skill evidence was detected."
   },
   {
     "job_id": "J002",
     "candidate_id": "C005",
-    "rank": 4,
+    "rank": 8,
     "final_score": 21.76,
     "explanation": "Candidate C005 is a limited fit because they match 0/4 required skills and have 5 years of experience for the 2-5 year role range. Projects are listed, but no direct job-skill evidence was detected."
   },
   {
     "job_id": "J002",
     "candidate_id": "C004",
-    "rank": 5,
-    "final_score": 21.68,
+    "rank": 9,
+    "final_score": 21.58,
     "explanation": "Candidate C004 is a limited fit because they match 0/4 required skills and have 2 years of experience for the 2-5 year role range. Projects are listed, but no direct job-skill evidence was detected."
+  },
+  {
+    "job_id": "J002",
+    "candidate_id": "C009",
+    "rank": 10,
+    "final_score": 14.64,
+    "explanation": "Candidate C009 is a limited fit because they match 0/4 required skills and have 1 years of experience, below the 2-year minimum. Projects are listed, but no direct job-skill evidence was detected."
+  },
+  {
+    "job_id": "J003",
+    "candidate_id": "C006",
+    "rank": 1,
+    "final_score": 85.35,
+    "explanation": "Candidate C006 is a strong fit because they match 4/4 required skills and have 3 years of experience for the 2-5 year role range. Project experience mentions rest apis."
+  },
+  {
+    "job_id": "J003",
+    "candidate_id": "C008",
+    "rank": 2,
+    "final_score": 45.27,
+    "explanation": "Candidate C008 is a moderate fit because they match 1/4 required skills and have 3 years of experience for the 2-5 year role range. Projects are listed, but no direct job-skill evidence was detected."
+  },
+  {
+    "job_id": "J003",
+    "candidate_id": "C010",
+    "rank": 3,
+    "final_score": 41.96,
+    "explanation": "Candidate C010 is a limited fit because they match 1/4 required skills and have 6 years of experience, above the 5-year maximum. Projects are listed, but no direct job-skill evidence was detected."
+  },
+  {
+    "job_id": "J003",
+    "candidate_id": "C001",
+    "rank": 4,
+    "final_score": 36.97,
+    "explanation": "Candidate C001 is a limited fit because they match 1/4 required skills and have 4 years of experience for the 2-5 year role range. Projects are listed, but no direct job-skill evidence was detected."
+  },
+  {
+    "job_id": "J003",
+    "candidate_id": "C002",
+    "rank": 5,
+    "final_score": 35.95,
+    "explanation": "Candidate C002 is a limited fit because they match 1/4 required skills and have 3 years of experience for the 2-5 year role range. Projects are listed, but no direct job-skill evidence was detected."
+  },
+  {
+    "job_id": "J003",
+    "candidate_id": "C003",
+    "rank": 6,
+    "final_score": 34.82,
+    "explanation": "Candidate C003 is a limited fit because they match 0/4 required skills and have 4 years of experience for the 2-5 year role range. Projects are listed, but no direct job-skill evidence was detected."
+  },
+  {
+    "job_id": "J003",
+    "candidate_id": "C007",
+    "rank": 7,
+    "final_score": 31.58,
+    "explanation": "Candidate C007 is a limited fit because they match 0/4 required skills and have 5 years of experience for the 2-5 year role range. Projects are listed, but no direct job-skill evidence was detected."
+  },
+  {
+    "job_id": "J003",
+    "candidate_id": "C004",
+    "rank": 8,
+    "final_score": 31.39,
+    "explanation": "Candidate C004 is a limited fit because they match 1/4 required skills and have 2 years of experience for the 2-5 year role range. Projects are listed, but no direct job-skill evidence was detected."
+  },
+  {
+    "job_id": "J003",
+    "candidate_id": "C009",
+    "rank": 9,
+    "final_score": 28.27,
+    "explanation": "Candidate C009 is a limited fit because they match 1/4 required skills and have 1 years of experience, below the 2-year minimum. Projects are listed, but no direct job-skill evidence was detected."
+  },
+  {
+    "job_id": "J003",
+    "candidate_id": "C005",
+    "rank": 10,
+    "final_score": 26.07,
+    "explanation": "Candidate C005 is a limited fit because they match 0/4 required skills and have 5 years of experience for the 2-5 year role range. Projects are listed, but no direct job-skill evidence was detected."
+  },
+  {
+    "job_id": "J004",
+    "candidate_id": "C007",
+    "rank": 1,
+    "final_score": 85.88,
+    "explanation": "Candidate C007 is a strong fit because they match 5/5 required skills and have 5 years of experience for the 3-7 year role range. Project experience mentions Kubernetes, ci/cd."
+  },
+  {
+    "job_id": "J004",
+    "candidate_id": "C010",
+    "rank": 2,
+    "final_score": 72.74,
+    "explanation": "Candidate C010 is a moderate fit because they match 4/5 required skills and have 6 years of experience for the 3-7 year role range. Projects are listed, but no direct job-skill evidence was detected."
+  },
+  {
+    "job_id": "J004",
+    "candidate_id": "C008",
+    "rank": 3,
+    "final_score": 39.65,
+    "explanation": "Candidate C008 is a limited fit because they match 1/5 required skills and have 3 years of experience for the 3-7 year role range. Projects are listed, but no direct job-skill evidence was detected."
+  },
+  {
+    "job_id": "J004",
+    "candidate_id": "C006",
+    "rank": 4,
+    "final_score": 36.17,
+    "explanation": "Candidate C006 is a limited fit because they match 1/5 required skills and have 3 years of experience for the 3-7 year role range. Projects are listed, but no direct job-skill evidence was detected."
+  },
+  {
+    "job_id": "J004",
+    "candidate_id": "C003",
+    "rank": 5,
+    "final_score": 35.32,
+    "explanation": "Candidate C003 is a limited fit because they match 1/5 required skills and have 4 years of experience for the 3-7 year role range. Projects are listed, but no direct job-skill evidence was detected."
+  },
+  {
+    "job_id": "J004",
+    "candidate_id": "C001",
+    "rank": 6,
+    "final_score": 32.07,
+    "explanation": "Candidate C001 is a limited fit because they match 1/5 required skills and have 4 years of experience for the 3-7 year role range. Projects are listed, but no direct job-skill evidence was detected."
+  },
+  {
+    "job_id": "J004",
+    "candidate_id": "C005",
+    "rank": 7,
+    "final_score": 24.19,
+    "explanation": "Candidate C005 is a limited fit because they match 0/5 required skills and have 5 years of experience for the 3-7 year role range. Projects are listed, but no direct job-skill evidence was detected."
+  },
+  {
+    "job_id": "J004",
+    "candidate_id": "C002",
+    "rank": 8,
+    "final_score": 23.95,
+    "explanation": "Candidate C002 is a limited fit because they match 0/5 required skills and have 3 years of experience for the 3-7 year role range. Projects are listed, but no direct job-skill evidence was detected."
+  },
+  {
+    "job_id": "J004",
+    "candidate_id": "C004",
+    "rank": 9,
+    "final_score": 18.1,
+    "explanation": "Candidate C004 is a limited fit because they match 0/5 required skills and have 2 years of experience, below the 3-year minimum. Projects are listed, but no direct job-skill evidence was detected."
+  },
+  {
+    "job_id": "J004",
+    "candidate_id": "C009",
+    "rank": 10,
+    "final_score": 12.36,
+    "explanation": "Candidate C009 is a limited fit because they match 0/5 required skills and have 1 years of experience, below the 3-year minimum. Projects are listed, but no direct job-skill evidence was detected."
   }
 ]
