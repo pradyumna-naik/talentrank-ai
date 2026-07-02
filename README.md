@@ -155,6 +155,26 @@ Without labels, it reports average top-10 skill coverage, semantic score, experi
 
 Prerequisites: Python 3.10+.
 
+Clone the repo and move into the project folder first — every command below assumes your terminal is
+already inside `talentrank-ai` (running them from your home folder will fail with "No such file or directory"):
+
+```powershell
+git clone https://github.com/pradyumna-naik/talentrank-ai.git
+cd talentrank-ai
+```
+
+(Optional but recommended) create and activate a virtual environment so dependencies stay isolated:
+
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+```
+
+If PowerShell blocks the activation script with an execution-policy error, run
+`Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass` once, then retry.
+
+Install dependencies and run the pipeline:
+
 ```powershell
 python -m pip install -r requirements.txt
 python run_pipeline.py
